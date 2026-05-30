@@ -1,4 +1,4 @@
-const CACHE_NAME = 'age-calc-v1';
+const CACHE_NAME = 'age-calc-v2';
 const ASSETS = [
     '/',
     '/index.html',
@@ -6,6 +6,13 @@ const ASSETS = [
     '/style.css',
     '/icon.svg',
     '/manifest.json'
+,
+    '/icon-48x48.png',
+    '/icon-72x72.png',
+    '/icon-96x96.png',
+    '/icon-144x144.png',
+    '/icon-192x192.png',
+    '/icon-512x512.png'
 ];
 
 self.addEventListener('install', function(e) {
