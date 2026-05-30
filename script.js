@@ -65,3 +65,31 @@ function calculateAge() {
         <div class="age-line">⏲️ <span class="label">الثواني:</span> <span class="value">${totalSeconds.toLocaleString()}</span></div>
     `;
 }
+
+// === PWA Install Prompt ===
+let deferredPrompt = null;
+const installContainer = document.getElementById('install-container');
+const installBtn = document.getElementById('install-btn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installContainer.style.display = 'block';
+});
+
+if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const result = await deferredPrompt.userChoice;
+        if (result.outcome === 'accepted') {
+            installContainer.style.display = 'none';
+        }
+        deferredPrompt = null;
+    });
+}
+
+window.addEventListener('appinstalled', () => {
+    installContainer.style.display = 'none';
+    deferredPrompt = null;
+});
