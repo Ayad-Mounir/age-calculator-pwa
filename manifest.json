@@ -1,0 +1,12 @@
+{
+  "name": "حاسبة العمر الدقيقة",
+  "short_name": "حاسبة العمر",
+  "description": "تطبيق لحساب العمر بالسنوات والأشهر والأسابيع والأيام والساعات والدقائق والثواني",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#4A90D9",
+  "theme_color": "#4A90D9",
+  "icons": [],
+  "lang": "ar",
+  "dir": "rtl"
+}
