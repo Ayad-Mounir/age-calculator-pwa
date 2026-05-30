@@ -4,79 +4,163 @@
     box-sizing: border-box;
 }
 
+:root {
+    --bg-grad-1: #4A90D9;
+    --bg-grad-2: #6C63FF;
+    --card-bg: #ffffff;
+    --text-primary: #333333;
+    --text-secondary: #777777;
+    --text-light: #999999;
+    --result-bg: #f5f5f5;
+    --divider: #e0e0e0;
+    --input-border: #ddd;
+    --btn-grad-1: #4A90D9;
+    --btn-grad-2: #6C63FF;
+    --shadow: rgba(0,0,0,0.2);
+    --value-color: #4A90D9;
+    --border-color: #ddd;
+    --icon-btn-bg: rgba(255,255,255,0.2);
+}
+
+[data-theme="dark"] {
+    --bg-grad-1: #1a1a2e;
+    --bg-grad-2: #16213e;
+    --card-bg: #1e1e2f;
+    --text-primary: #e0e0e0;
+    --text-secondary: #aaaaaa;
+    --text-light: #888888;
+    --result-bg: #2a2a3d;
+    --divider: #3a3a4d;
+    --input-border: #3a3a4d;
+    --btn-grad-1: #4A90D9;
+    --btn-grad-2: #6C63FF;
+    --shadow: rgba(0,0,0,0.4);
+    --value-color: #6C9FFF;
+    --border-color: #3a3a4d;
+    --icon-btn-bg: rgba(255,255,255,0.1);
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #4A90D9, #6C63FF);
+    background: linear-gradient(135deg, var(--bg-grad-1), var(--bg-grad-2));
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
+    transition: background 0.4s ease;
 }
 
 .container {
-    background: white;
+    background: var(--card-bg);
     border-radius: 20px;
     padding: 30px;
     max-width: 420px;
     width: 100%;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 40px var(--shadow);
     text-align: center;
+    transition: background 0.4s ease, box-shadow 0.4s ease;
 }
 
-h1 {
-    color: #333;
-    margin-bottom: 10px;
-    font-size: 1.5em;
+/* ===== رأس الصفحة ===== */
+.header-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
 }
 
-p {
-    color: #777;
+.header-bar h1 {
+    color: var(--text-primary);
+    font-size: 1.3em;
+    margin: 0;
+}
+
+.icon-btn {
+    background: var(--icon-btn-bg);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 10px;
+    padding: 6px 10px;
+    font-size: 1em;
+    font-weight: bold;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 40px;
+}
+
+.icon-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.05);
+}
+
+#subtitle {
+    color: var(--text-secondary);
     margin-bottom: 20px;
+    font-size: 0.9em;
+    transition: color 0.3s ease;
+}
+
+/* ===== حاسبة العمر ===== */
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
 input {
     display: block;
     width: 100%;
     padding: 12px;
-    border: 2px solid #ddd;
+    border: 2px solid var(--input-border);
     border-radius: 10px;
     font-size: 1em;
-    margin-bottom: 15px;
+    margin-bottom: 0;
     text-align: center;
+    background: var(--card-bg);
+    color: var(--text-primary);
+    transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
 }
 
-button {
+input:focus {
+    outline: none;
+    border-color: var(--btn-grad-1);
+}
+
+.btn-primary {
     width: 100%;
     padding: 14px;
-    background: linear-gradient(135deg, #4A90D9, #6C63FF);
+    background: linear-gradient(135deg, var(--btn-grad-1), var(--btn-grad-2));
     color: white;
     border: none;
     border-radius: 10px;
     font-size: 1.1em;
     font-weight: bold;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
-button:active {
+.btn-primary:active {
     transform: scale(0.97);
 }
 
+/* ===== النتائج ===== */
 .result {
     margin-top: 25px;
     padding: 15px;
-    background: #f5f5f5;
+    background: var(--result-bg);
     border-radius: 10px;
     font-size: 1em;
-    color: #333;
+    color: var(--text-primary);
     line-height: 2;
     text-align: right;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 .result .age-line {
     padding: 5px 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--divider);
+    transition: border-color 0.3s ease;
 }
 
 .result .age-line:last-child {
@@ -84,20 +168,144 @@ button:active {
 }
 
 .result .label {
-    color: #666;
+    color: var(--text-secondary);
 }
 
 .result .value {
     font-weight: bold;
-    color: #4A90D9;
+    color: var(--value-color);
     font-size: 1.1em;
+    transition: color 0.3s ease;
+}
+
+/* ===== العد التنازلي ===== */
+.countdown-section {
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--result-bg);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.section-title {
+    font-size: 0.95em;
+    font-weight: bold;
+    color: var(--text-primary);
+    margin-bottom: 15px;
+}
+
+.countdown-grid {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+}
+
+.countdown-num {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--value-color);
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 8px 12px;
+    min-width: 55px;
+    text-align: center;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+.countdown-label {
+    font-size: 0.75em;
+    color: var(--text-light);
+    margin-top: 5px;
+}
+
+/* ===== أزرار المشاركة ===== */
+.share-section {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-share, .btn-save {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-share {
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+}
+
+.btn-save {
+    background: linear-gradient(135deg, #FF9800, #F57C00);
+    color: white;
+}
+
+.btn-share:active, .btn-save:active {
+    transform: scale(0.97);
+}
+
+/* ===== التواريخ المحفوظة ===== */
+.saved-section {
+    margin-top: 20px;
+    text-align: right;
+}
+
+#saved-list {
+    margin-top: 10px;
+}
+
+.saved-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: var(--result-bg);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    color: var(--text-primary);
+    transition: background 0.3s ease;
+}
+
+.saved-item .saved-name {
+    font-weight: bold;
+    flex: 1;
+}
+
+.saved-item .saved-date {
+    color: var(--text-light);
+    margin: 0 10px;
+}
+
+.saved-item .delete-btn {
+    background: none;
+    border: none;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 0 5px;
 }
 
 /* ===== زر تثبيت التطبيق (PWA) ===== */
 .install-container {
     margin-top: 20px;
     padding-top: 20px;
-    border-top: 1px solid #e0e0e0;
+    border-top: 1px solid var(--divider);
+    transition: border-color 0.3s ease;
 }
 
 .btn-install {
@@ -124,8 +332,38 @@ button:active {
 }
 
 .install-hint {
-    color: #999;
+    color: var(--text-light);
     font-size: 0.8em;
     margin-top: 8px;
     text-align: center;
+}
+
+/* ===== رسالة عيد الميلاد ===== */
+.birthday-message {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    color: white;
+    padding: 15px;
+    border-radius: 12px;
+    margin-top: 15px;
+    font-size: 1.1em;
+    font-weight: bold;
+    animation: pulse 1.5s ease infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+}
+
+/* ===== زر تثبيت iOS ===== */
+.ios-install-hint {
+    margin-top: 15px;
+    padding: 12px;
+    background: var(--result-bg);
+    border-radius: 10px;
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    display: none;
+    transition: background 0.3s ease;
 }
