@@ -6,25 +6,68 @@
     <title>حاسبة العمر الدقيقة</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4A90D9">
+    <meta name="theme-color" content="#4A90D9" id="theme-meta">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="حاسبة العمر">
     <link rel="apple-touch-icon" href="icon.svg">
 </head>
 <body>
-    <div class="container">
-        <h1>🎂 حاسبة العمر الدقيقة</h1>
-        <p>أدخل تاريخ ميلادك لحساب عمرك بالتفصيل</p>
-        <input type="datetime-local" id="birthdate">
-        <button onclick="calculateAge()" class="btn-primary">احسب العمر</button>
-        <div id="result" class="result"></div>
+    <div class="container" id="app">
+        <!-- رأس الصفحة مع الأزرار -->
+        <div class="header-bar">
+            <button id="theme-toggle" class="icon-btn" title="الوضع الليلي">🌙</button>
+            <h1>🎂 حاسبة العمر الدقيقة</h1>
+            <button id="lang-toggle" class="icon-btn" title="English">EN</button>
+        </div>
+        <p id="subtitle">أدخل تاريخ ميلادك لحساب عمرك بالتفصيل</p>
         
+        <!-- حاسبة العمر -->
+        <div class="input-group">
+            <input type="datetime-local" id="birthdate">
+            <button onclick="calculateAge()" class="btn-primary" id="calc-btn">🔍 احسب العمر</button>
+        </div>
+        
+        <div id="result" class="result"></div>
+
+        <!-- العد التنازلي لعيد الميلاد القادم -->
+        <div id="countdown-section" class="countdown-section" style="display:none;">
+            <div class="section-title">🎉 العد التنازلي لعيد ميلادك القادم</div>
+            <div class="countdown-grid">
+                <div class="countdown-item">
+                    <span class="countdown-num" id="cd-days">0</span>
+                    <span class="countdown-label">يوم</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-num" id="cd-hours">0</span>
+                    <span class="countdown-label">ساعة</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-num" id="cd-mins">0</span>
+                    <span class="countdown-label">دقيقة</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-num" id="cd-secs">0</span>
+                    <span class="countdown-label">ثانية</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- أزرار المشاركة -->
+        <div id="share-section" class="share-section" style="display:none;">
+            <button id="share-btn" class="btn-share">📤 شارك عمرك</button>
+            <button id="save-btn" class="btn-save" style="display:none;">💾 حفظ التاريخ</button>
+        </div>
+
+        <!-- قائمة التواريخ المحفوظة -->
+        <div id="saved-section" class="saved-section" style="display:none;">
+            <div class="section-title">📂 تواريخ محفوظة</div>
+            <div id="saved-list"></div>
+        </div>
+
         <!-- زر تثبيت التطبيق -->
         <div id="install-container" class="install-container" style="display:none;">
-            <button id="install-btn" class="btn-install">
-                📲 تثبيت التطبيق
-            </button>
+            <button id="install-btn" class="btn-install">📲 تثبيت التطبيق</button>
             <p class="install-hint">ثبّت التطبيق على جهازك لاستخدامه دون إنترنت</p>
         </div>
     </div>
