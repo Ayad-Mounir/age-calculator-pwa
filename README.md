@@ -37,7 +37,7 @@
 افتح الرابط التالي في متصفحك:
 
 ```
-https://ayad-mounir.github.io/Gemini/
+https://ayad-mounir.github.io/age-calculator-pwa/
 ```
 
 ### 📲 التثبيت كتطبيق (PWA)
@@ -66,7 +66,7 @@ https://ayad-mounir.github.io/Gemini/
 ## 📂 هيكل المشروع
 
 ```
-Gemini/
+age-calculator-pwa/
 ├── 📄 index.html      # الصفحة الرئيسية (RTL — عربي)
 ├── 🎨 style.css       # التصميم والتنسيق
 ├── ⚙️ script.js       # منطق حساب العمر
