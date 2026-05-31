@@ -4,21 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>حاسبة العمر الدقيقة</title>
+
+    <!-- Primary Meta -->
+    <meta name="description" content="تطبيق لحساب العمر بالسنوات والأشهر والأسابيع والأيام والساعات والدقائق والثواني — Progressive Web App">
+    <meta name="author" content="Mounir Ayad">
+
+    <!-- Open Graph / Social -->
+    <meta property="og:title" content="🎂 حاسبة العمر الدقيقة">
+    <meta property="og:description" content="احسب عمرك بالسنوات والأشهر والأسابيع والأيام والساعات والدقائق والثواني">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ayad-mounir.github.io/age-calculator-pwa/">
+    <meta property="og:image" content="https://ayad-mounir.github.io/age-calculator-pwa/icon-512x512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:locale" content="ar_MA">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="🎂 حاسبة العمر الدقيقة">
+    <meta name="twitter:description" content="احسب عمرك بالسنوات والأشهر والأسابيع والأيام والساعات والدقائق والثواني">
+    <meta name="twitter:image" content="https://ayad-mounir.github.io/age-calculator-pwa/icon-512x512.png">
+
+    <!-- PWA -->
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/svg+xml" href="icon.svg">
-<link rel="icon" type="image/png" sizes="48x48" href="icon-48x48.png">
-<link rel="icon" type="image/png" sizes="72x72" href="icon-72x72.png">
-<link rel="icon" type="image/png" sizes="96x96" href="icon-96x96.png">
-<link rel="icon" type="image/png" sizes="144x144" href="icon-144x144.png">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="icon-512x512.png">
-<meta name="theme-color" content="#4A90D9" id="theme-meta">
+    <link rel="icon" type="image/png" sizes="48x48" href="icon-48x48.png">
+    <link rel="icon" type="image/png" sizes="72x72" href="icon-72x72.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="icon-96x96.png">
+    <link rel="icon" type="image/png" sizes="144x144" href="icon-144x144.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon-512x512.png">
+
+    <!-- iOS / Apple -->
+    <meta name="theme-color" content="#4A90D9" id="theme-meta">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="حاسبة العمر">
     <link rel="apple-touch-icon" href="icon-192x192.png">
-<link rel="apple-touch-icon" sizes="48x48" href="icon-48x48.png">
+    <link rel="apple-touch-icon" sizes="48x48" href="icon-48x48.png">
     <link rel="apple-touch-icon" sizes="72x72" href="icon-72x72.png">
     <link rel="apple-touch-icon" sizes="96x96" href="icon-96x96.png">
     <link rel="apple-touch-icon" sizes="144x144" href="icon-144x144.png">
@@ -26,41 +50,42 @@
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512x512.png">
 </head>
 <body>
-    <div class="container" id="app">
-        <!-- رأس الصفحة مع الأزرار -->
+    <div class="container" id="app" role="main">
+        <!-- رأس الصفحة -->
         <div class="header-bar">
-            <button id="theme-toggle" class="icon-btn" title="الوضع الليلي">🌙</button>
+            <button id="theme-toggle" class="icon-btn" title="الوضع الليلي" aria-label="تفعيل الوضع الليلي">🌙</button>
             <h1>🎂 حاسبة العمر الدقيقة</h1>
-            <button id="lang-toggle" class="icon-btn" title="English">EN</button>
+            <button id="lang-toggle" class="icon-btn" title="English" aria-label="Switch to English">EN</button>
         </div>
         <p id="subtitle">أدخل تاريخ ميلادك لحساب عمرك بالتفصيل</p>
-        
+
         <!-- حاسبة العمر -->
         <div class="input-group">
-            <input type="datetime-local" id="birthdate">
-            <button onclick="calculateAge()" class="btn-primary" id="calc-btn">🔍 احسب العمر</button>
+            <label for="birthdate" class="sr-only">تاريخ الميلاد</label>
+            <input type="datetime-local" id="birthdate" aria-label="أدخل تاريخ ميلادك">
+            <button onclick="calculateAge()" class="btn-primary" id="calc-btn" aria-label="احسب العمر">🔍 احسب العمر</button>
         </div>
-        
-        <div id="result" class="result"></div>
 
-        <!-- العد التنازلي لعيد الميلاد القادم -->
-        <div id="countdown-section" class="countdown-section" style="display:none;">
+        <div id="result" class="result" aria-live="polite" aria-atomic="true"></div>
+
+        <!-- العد التنازلي -->
+        <div id="countdown-section" class="countdown-section" style="display:none;" aria-label="العد التنازلي لعيد الميلاد">
             <div class="section-title">🎉 العد التنازلي لعيد ميلادك القادم</div>
-            <div class="countdown-grid">
-                <div class="countdown-item">
-                    <span class="countdown-num" id="cd-days">0</span>
+            <div class="countdown-grid" role="list">
+                <div class="countdown-item" role="listitem">
+                    <span class="countdown-num" id="cd-days" aria-label="الأيام المتبقية">0</span>
                     <span class="countdown-label">يوم</span>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-num" id="cd-hours">0</span>
+                <div class="countdown-item" role="listitem">
+                    <span class="countdown-num" id="cd-hours" aria-label="الساعات المتبقية">0</span>
                     <span class="countdown-label">ساعة</span>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-num" id="cd-mins">0</span>
+                <div class="countdown-item" role="listitem">
+                    <span class="countdown-num" id="cd-mins" aria-label="الدقائق المتبقية">0</span>
                     <span class="countdown-label">دقيقة</span>
                 </div>
-                <div class="countdown-item">
-                    <span class="countdown-num" id="cd-secs">0</span>
+                <div class="countdown-item" role="listitem">
+                    <span class="countdown-num" id="cd-secs" aria-label="الثواني المتبقية">0</span>
                     <span class="countdown-label">ثانية</span>
                 </div>
             </div>
@@ -68,28 +93,23 @@
 
         <!-- أزرار المشاركة -->
         <div id="share-section" class="share-section" style="display:none;">
-            <button id="share-btn" class="btn-share">📤 شارك عمرك</button>
-            <button id="save-btn" class="btn-save" style="display:none;">💾 حفظ التاريخ</button>
+            <button id="share-btn" class="btn-share" aria-label="شارك عمرك">📤 شارك عمرك</button>
+            <button id="save-btn" class="btn-save" style="display:none;" aria-label="حفظ التاريخ">💾 حفظ</button>
         </div>
 
         <!-- قائمة التواريخ المحفوظة -->
-        <div id="saved-section" class="saved-section" style="display:none;">
+        <div id="saved-section" class="saved-section" style="display:none;" aria-label="التواريخ المحفوظة">
             <div class="section-title">📂 تواريخ محفوظة</div>
-            <div id="saved-list"></div>
+            <div id="saved-list" role="list"></div>
         </div>
 
         <!-- زر تثبيت التطبيق -->
         <div id="install-container" class="install-container" style="display:none;">
-            <button id="install-btn" class="btn-install">📲 تثبيت التطبيق</button>
+            <button id="install-btn" class="btn-install" aria-label="تثبيت التطبيق">📲 تثبيت التطبيق</button>
             <p class="install-hint">ثبّت التطبيق على جهازك لاستخدامه دون إنترنت</p>
         </div>
     </div>
-    
+
     <script src="script.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
-        }
-    </script>
 </body>
 </html>
