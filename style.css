@@ -1,3 +1,7 @@
+/* ============================================================
+   🎨 Age Calculator PWA v1.1.0 — تصميم احترافي
+   ============================================================ */
+
 * {
     margin: 0;
     padding: 0;
@@ -20,6 +24,7 @@
     --value-color: #4A90D9;
     --border-color: #ddd;
     --icon-btn-bg: rgba(255,255,255,0.2);
+    --anim-duration: 0.3s;
 }
 
 [data-theme="dark"] {
@@ -38,6 +43,10 @@
     --value-color: #6C9FFF;
     --border-color: #3a3a4d;
     --icon-btn-bg: rgba(255,255,255,0.1);
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
@@ -60,6 +69,12 @@ body {
     box-shadow: 0 10px 40px var(--shadow);
     text-align: center;
     transition: background 0.4s ease, box-shadow 0.4s ease;
+    animation: cardEntrance 0.5s ease-out;
+}
+
+@keyframes cardEntrance {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ===== رأس الصفحة ===== */
@@ -74,6 +89,7 @@ body {
     color: var(--text-primary);
     font-size: 1.3em;
     margin: 0;
+    transition: color 0.3s ease;
 }
 
 .icon-btn {
@@ -94,6 +110,11 @@ body {
     transform: scale(1.05);
 }
 
+.icon-btn:focus-visible {
+    outline: 2px solid var(--btn-grad-1);
+    outline-offset: 2px;
+}
+
 #subtitle {
     color: var(--text-secondary);
     margin-bottom: 20px;
@@ -101,7 +122,7 @@ body {
     transition: color 0.3s ease;
 }
 
-/* ===== حاسبة العمر ===== */
+/* ===== إدخال التاريخ ===== */
 .input-group {
     display: flex;
     flex-direction: column;
@@ -115,7 +136,6 @@ input {
     border: 2px solid var(--input-border);
     border-radius: 10px;
     font-size: 1em;
-    margin-bottom: 0;
     text-align: center;
     background: var(--card-bg);
     color: var(--text-primary);
@@ -125,6 +145,7 @@ input {
 input:focus {
     outline: none;
     border-color: var(--btn-grad-1);
+    box-shadow: 0 0 0 3px rgba(74, 144, 217, 0.2);
 }
 
 .btn-primary {
@@ -137,11 +158,50 @@ input:focus {
     font-size: 1.1em;
     font-weight: bold;
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.btn-primary:hover {
+    box-shadow: 0 4px 15px rgba(74, 144, 217, 0.4);
 }
 
 .btn-primary:active {
     transform: scale(0.97);
+}
+
+.btn-primary:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+/* ===== رسائل الخطأ ===== */
+.error-msg {
+    color: #e74c3c !important;
+    font-weight: bold;
+    padding: 12px;
+    background: rgba(231, 76, 60, 0.1);
+    border-radius: 8px;
+    margin-top: 15px;
+    animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(-5px); }
+    75%      { transform: translateX(5px); }
+}
+
+/* ===== Spinner التحميل ===== */
+.loading-spinner {
+    padding: 20px;
+    color: var(--text-secondary);
+    font-size: 1em;
+    animation: pulse 1s ease infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.5; }
 }
 
 /* ===== النتائج ===== */
@@ -157,25 +217,83 @@ input:focus {
     transition: background 0.3s ease, color 0.3s ease;
 }
 
-.result .age-line {
-    padding: 5px 10px;
-    border-bottom: 1px solid var(--divider);
-    transition: border-color 0.3s ease;
+[dir="ltr"] .result {
+    text-align: left;
 }
 
-.result .age-line:last-child {
+.age-result-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.age-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--divider);
+    transition: border-color 0.3s ease;
+    animation: fadeInLine 0.4s ease backwards;
+}
+
+.age-line:nth-child(1) { animation-delay: 0.05s; }
+.age-line:nth-child(2) { animation-delay: 0.10s; }
+.age-line:nth-child(3) { animation-delay: 0.15s; }
+.age-line:nth-child(4) { animation-delay: 0.20s; }
+.age-line:nth-child(5) { animation-delay: 0.25s; }
+.age-line:nth-child(6) { animation-delay: 0.30s; }
+.age-line:nth-child(7) { animation-delay: 0.35s; }
+
+@keyframes fadeInLine {
+    from { opacity: 0; transform: translateX(-10px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+.age-line:last-child {
     border-bottom: none;
 }
 
-.result .label {
-    color: var(--text-secondary);
+.age-icon {
+    font-size: 1.2em;
+    min-width: 28px;
+    text-align: center;
 }
 
-.result .value {
+.age-line .label {
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.age-line .value {
     font-weight: bold;
     color: var(--value-color);
-    font-size: 1.1em;
+    font-size: 1.15em;
+    margin-right: auto;
     transition: color 0.3s ease;
+}
+
+[dir="ltr"] .age-line .value {
+    margin-right: 0;
+    margin-left: auto;
+}
+
+/* ===== التفاصيل الإضافية (ساعات/دقائق/ثواني متبقية) ===== */
+.age-detail {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--divider);
+    font-size: 0.85em;
+    color: var(--text-light);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    transition: border-color 0.3s ease;
+}
+
+.detail-item {
+    white-space: nowrap;
 }
 
 /* ===== العد التنازلي ===== */
@@ -185,6 +303,7 @@ input:focus {
     background: var(--result-bg);
     border-radius: 10px;
     transition: background 0.3s ease;
+    animation: fadeInLine 0.4s ease;
 }
 
 .section-title {
@@ -217,7 +336,8 @@ input:focus {
     min-width: 55px;
     text-align: center;
     box-shadow: 0 2px 8px var(--shadow);
-    transition: color 0.3s ease, background 0.3s ease;
+    transition: all 0.3s ease;
+    font-variant-numeric: tabular-nums;
 }
 
 .countdown-label {
@@ -226,7 +346,7 @@ input:focus {
     margin-top: 5px;
 }
 
-/* ===== أزرار المشاركة ===== */
+/* ===== أزرار المشاركة والحفظ ===== */
 .share-section {
     margin-top: 15px;
     display: flex;
@@ -254,14 +374,27 @@ input:focus {
     color: white;
 }
 
+.btn-share:hover, .btn-save:hover {
+    transform: translateY(-1px);
+}
+
 .btn-share:active, .btn-save:active {
     transform: scale(0.97);
+}
+
+.btn-share:focus-visible, .btn-save:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
 }
 
 /* ===== التواريخ المحفوظة ===== */
 .saved-section {
     margin-top: 20px;
     text-align: right;
+}
+
+[dir="ltr"] .saved-section {
+    text-align: left;
 }
 
 #saved-list {
@@ -278,7 +411,15 @@ input:focus {
     margin-bottom: 8px;
     font-size: 0.9em;
     color: var(--text-primary);
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.saved-item:hover {
+    transform: translateX(-2px);
+}
+
+[dir="ltr"] .saved-item:hover {
+    transform: translateX(2px);
 }
 
 .saved-item .saved-name {
@@ -289,18 +430,28 @@ input:focus {
 .saved-item .saved-date {
     color: var(--text-light);
     margin: 0 10px;
+    font-size: 0.85em;
 }
 
-.saved-item .delete-btn {
+.saved-action-btn {
     background: none;
     border: none;
-    color: #e74c3c;
+    color: var(--text-secondary);
     cursor: pointer;
     font-size: 1.2em;
     padding: 0 5px;
+    transition: transform 0.2s, color 0.2s;
 }
 
-/* ===== زر تثبيت التطبيق (PWA) ===== */
+.saved-action-btn:hover {
+    transform: scale(1.2);
+}
+
+.saved-action-btn.delete-btn {
+    color: #e74c3c;
+}
+
+/* ===== تثبيت التطبيق (PWA) ===== */
 .install-container {
     margin-top: 20px;
     padding-top: 20px;
@@ -331,6 +482,11 @@ input:focus {
     transform: scale(0.97);
 }
 
+.btn-install:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
 .install-hint {
     color: var(--text-light);
     font-size: 0.8em;
@@ -344,18 +500,40 @@ input:focus {
     color: white;
     padding: 15px;
     border-radius: 12px;
-    margin-top: 15px;
+    margin-bottom: 15px;
     font-size: 1.1em;
     font-weight: bold;
-    animation: pulse 1.5s ease infinite;
+    animation: birthdayPulse 1.5s ease infinite;
 }
 
-@keyframes pulse {
+@keyframes birthdayPulse {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.03); }
+    50%      { transform: scale(1.03); }
 }
 
-/* ===== زر تثبيت iOS ===== */
+/* ===== إشعار Toast ===== */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #333;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 0.95em;
+    font-weight: bold;
+    z-index: 9999;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    pointer-events: none;
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ===== تعليمات تثبيت iOS ===== */
 .ios-install-hint {
     margin-top: 15px;
     padding: 12px;
@@ -366,4 +544,41 @@ input:focus {
     line-height: 1.6;
     display: none;
     transition: background 0.3s ease;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+    .container {
+        padding: 20px 15px;
+        border-radius: 16px;
+    }
+
+    .header-bar h1 {
+        font-size: 1.1em;
+    }
+
+    .countdown-grid {
+        gap: 8px;
+    }
+
+    .countdown-num {
+        font-size: 1.4em;
+        padding: 6px 8px;
+        min-width: 44px;
+    }
+}
+
+/* ===== Reduced motion ===== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
 }
